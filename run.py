@@ -94,7 +94,8 @@ def rename_playfield_folders(name_mapping: dict, scenario_path:str):
     for k,v in name_mapping.items():
         source_path = playfield_folder_path_format.format(scenario_path, k)
         dest_path = playfield_folder_path_format.format(scenario_path, v)
-        move(source_path, dest_path)
+        if isdir(source_path):
+            move(source_path, dest_path)
 
 
 def update_pda(scenario_path:str, chapters:list):

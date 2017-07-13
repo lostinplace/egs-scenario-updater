@@ -13,8 +13,8 @@ def format_group_name(group_name:str) -> str:
 
 
 def get_pois(playfield:dict) -> List[dict]:
-    pois: Dict[str, List[dict]] = playfield.get('POIs')
-    random_pois: List[dict] = pois.get('Random')
+    pois: Dict[str, List[dict]] = playfield.get('POIs', {})
+    random_pois: List[dict] = pois.get('Random', [])
     return random_pois
 
 
@@ -129,7 +129,11 @@ def construct_playfield_chapter(playfield_name: str, playfield: dict) -> Tuple[d
     pois = get_pois(playfield)
     poi_names = extract_poi_names(pois)
     task_results = map(generate_conquer_task, poi_names)
-    tasks, messages = zip(*task_results)
+    task_result_list = list(task_results)
+    if not task_result_list:
+        return None
+
+    tasks, messages = zip(*task_result_list)
     out["Tasks"] = list(tasks)
 
     message_dict = reduce(lambda a,b: {**a, **b}, messages, chapter_messages)
