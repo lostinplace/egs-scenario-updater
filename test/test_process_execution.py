@@ -21,4 +21,9 @@ class TestProcessExecution(unittest.TestCase):
         result = build_new_scenario("assets/default-scenario", "assets", "scratch/output-scenario")
         self.assertTrue(True)
 
+    def test_whole_process_2(self):
+        result = build_new_scenario("assets/test-scenario", "assets", "scratch/output-scenario")
+        self.assertTrue(True)
+
+
 

@@ -20,7 +20,7 @@ def get_pois(playfield:dict) -> List[dict]:
 
 def extract_poi_names(pois:List[dict]) -> List[Tuple[str,str]]:
     group_names = map(lambda x: x.get('GroupName'), pois)
-    appropriate = filter(lambda x: "TS" in x, group_names)
+    appropriate = filter(lambda x: "TS" not in x, group_names)
     formatted_names = map(lambda x: (x, format_group_name(x)), appropriate)
     return list(formatted_names)
 
