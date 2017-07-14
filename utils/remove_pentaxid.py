@@ -1,17 +1,22 @@
 import re
 
-from lib.child_remover import remove_children
+from lib.child_removal_rule import ChildRemovalRule
 
 resource_pattern = re.compile("PentaxidResource")
 crystal_pattern = re.compile("[Cc]rystal")
 
 
-def remove_pentaxid(playfield:dict) -> dict:
+def generate_pentaxid_removal_rule():
+    return ChildRemovalRule(is_pentaxid_resource)
 
-    crystal_test = lambda node: isinstance(node, list) and crystal_pattern.match(str(node[0]))
-    without_crystals = remove_children(playfield, crystal_test)
-    resource_test = lambda node: isinstance(node, dict) and resource_pattern.match(str(node.get('Name')))
 
-    without_resources = remove_children(without_crystals, resource_test)
-    return without_resources
+def is_pentaxid_resource(node: object) -> bool:
+    return isinstance(node, dict) and resource_pattern.match(str(node.get('Name')))
 
+
+def generate_crystal_removal_rule():
+    return ChildRemovalRule(is_crystal_decoration)
+
+
+def is_crystal_decoration(node:object) -> bool:
+    return isinstance(node, list) and crystal_pattern.match(str(node[0]))

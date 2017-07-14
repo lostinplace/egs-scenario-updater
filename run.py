@@ -4,12 +4,14 @@ from shutil import copytree, rmtree, move
 from sys import argv
 from typing import Callable, List, Set, Sequence, Tuple
 
+from lib.rule_based_dft import execute
+from utils.capitalize_struct_boolean import generate_struct_capitalization_rule
 from utils.mission_builder import construct_playfield_chapter
 from utils.nerf_resources import nerf_resources
 from utils.pda_manager import load_pda, construct_basic_pda, write_pda, load_pda_messages, \
     reformat_simple_dict_into_message_dict, write_messages
 from utils.playfield_manager import get_playfield, playfield_path_format, write_playfields
-from utils.remove_pentaxid import remove_pentaxid
+from utils.remove_pentaxid import generate_crystal_removal_rule, generate_pentaxid_removal_rule
 from utils.sector_processing import get_playfields_from_sector_file, update_sector_file
 
 
@@ -31,8 +33,15 @@ def generate_playfield_processor(scenario_path: str, stock_path: str) -> Callabl
             if playfield is None:
                 return None
 
-        pentaxid_removed = remove_pentaxid(playfield)
-        resources_nerfed = nerf_resources(pentaxid_removed)
+        rules = {
+            "remove crystals": generate_crystal_removal_rule(),
+            "remove pentaxid": generate_pentaxid_removal_rule(),
+            "capitalize structs": generate_struct_capitalization_rule()
+        }
+
+        rules_executed = execute(rules, playfield)
+        resources_nerfed = nerf_resources(rules_executed)
+
         return resources_nerfed
     return process_playfield
 

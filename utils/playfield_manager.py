@@ -27,7 +27,7 @@ def get_playfield(playfield_path:str) -> map:
     contents = data.decode("utf-8")
 
     safe_contents = contents.replace("\t", "  ")
-    doc = yaml.load(safe_contents)
+    doc = yaml.safe_load(safe_contents)
     return doc
 
 playfield_path_format = "{}/Playfields/{}/playfield.yaml"

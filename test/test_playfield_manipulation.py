@@ -1,7 +1,11 @@
 import unittest
 
 import yaml
-from playfield_manager import get_playfield
+
+from lib.rule_based_dft import execute
+from utils.capitalize_struct_boolean import generate_struct_capitalization_rule
+from utils.playfield_manager import get_playfield
+from utils.remove_pentaxid import generate_crystal_removal_rule
 
 
 class TestPlayfieldManipulation(unittest.TestCase):
@@ -23,12 +27,6 @@ class TestPlayfieldManipulation(unittest.TestCase):
 
         self.assertFalse(result1 and result2)
 
-    def test_generic_child_remover(self):
-        playfield = get_playfield("assets/Playfields/Mato/playfield.yaml")
-        from lib.child_remover import remove_children
-        actual = remove_children(playfield, lambda x: isinstance(x, dict) and x.get('Name') == 'PentaxidResource')
-        result = yaml.dump(actual).__contains__("Pentaxid")
-        self.assertFalse(result)
 
     def test_resource_nerfing(self):
         playfield = get_playfield("assets/Playfields/Mato/playfield.yaml")
@@ -43,6 +41,36 @@ class TestPlayfieldManipulation(unittest.TestCase):
         self.assertEqual(new_count, [10, 18])
         new_size = actual['RandomResources'][0].get('SizeMinMax')
         self.assertEqual(new_size, [3, 5])
+
+    def test_rulebased_crystal_removal(self):
+        rule = generate_crystal_removal_rule()
+        rule_dict = {"remove crystals": rule}
+
+        playfield = get_playfield("assets/Playfields/Mato/playfield.yaml")
+
+        actual = execute(rule_dict, playfield)
+
+        dump = yaml.dump(actual)
+
+        result1 = "Pentaxid" in dump
+        result2 = "crystal" not in dump
+
+        self.assertTrue(result1 and result2)
+
+    def test_struct_bool_capitalization(self):
+        rule = generate_struct_capitalization_rule()
+        rule_dict = {"capitalize struct values": rule}
+
+        playfield = get_playfield("assets/Playfields/Mato/playfield.yaml")
+
+        actual = execute(rule_dict, playfield)
+
+        dump = yaml.dump(actual)
+
+        result1 = "Struct: 'True'" in dump
+        result2 = "Struct: true" not in dump
+
+        self.assertTrue(result1 and result2)
 
 
 if __name__ == '__main__':
