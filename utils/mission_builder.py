@@ -35,10 +35,12 @@ completion_message_format = "{} Captured"
 
 task_structure = {
     "TaskTitle": '',
-    "Rewards":{
-        "Item": "PentaxidOre",
-        "Count": 5
-    },
+    "Rewards": [
+      { 
+         "Item": "PentaxidOre",
+         "Count": 5
+      }
+    ],
     "Actions":[]
 }
 
