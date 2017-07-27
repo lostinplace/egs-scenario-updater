@@ -20,8 +20,16 @@ To run the script from the command line:
 ```
 ~ git clone git@github.com:lostinplace/egs-scenario-updater.git
 ~ cd egs-scenario-updater
-~ python run.py <PATH TO SOURCE SCENARIO> <PATH TO BASE CONTENT FOLDER> <NAME OF OUTPUT SCENARIO>
+~ ./updater.py --basepath=<PATH TO CONTENT FOLDER> <NAME OF SOURCE SCENARIO> <NAME OF OUTPUT SCENARIO>
 ```
+
+You can also see usage by running:
+
+```
+~ ./updater.py -h
+```
+
+If you's like, you can place the basepath in a file called `.updater-config`  it will traverse to root looking for it, and it will use the file contents as a basepath
 
 I ran every thing on WSL (bash for windows) I haven't tried it on the windows command line
 

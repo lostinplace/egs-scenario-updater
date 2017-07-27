@@ -1,8 +1,7 @@
 from functools import reduce
 from os.path import exists, isdir
 from shutil import copytree, rmtree, move
-from sys import argv
-from typing import Callable, List, Set, Sequence, Tuple
+from typing import Callable, Set, Sequence, Tuple
 
 from lib.rule_based_dft import execute
 from utils.capitalize_struct_boolean import generate_struct_capitalization_rule
@@ -127,14 +126,3 @@ def update_messages(scenario_path:str, messages:dict):
     new_message_dict = {**old_messages, **formatted_new_messages}
 
     write_messages(new_message_dict, scenario_path)
-
-
-if __name__ == "__main__":
-    args = argv
-    input_scenario_path = argv[1]
-    print(input_scenario_path)
-    stock_data_path = argv[2]
-    print(stock_data_path)
-    output_scenario_path = argv[3]
-    print(output_scenario_path)
-    build_new_scenario(input_scenario_path, stock_data_path, output_scenario_path)
