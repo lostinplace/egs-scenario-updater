@@ -71,8 +71,18 @@ def get_paths(arg_dict: Dict[str, str]) -> Tuple[str, str, str]:
 
     content_folder_path = identify_and_resolve_content_folder(basepath)
 
-    input_scenario_path = content_folder_path + '/Scenarios/' + arg_dict['source']
-    output_scenario_path = content_folder_path + '/Scenarios/' + arg_dict['dest']
+    source_string = arg_dict['source']
+    if os.path.isdir(source_string):
+        input_scenario_path = source_string
+    else:
+        input_scenario_path = content_folder_path + '/Scenarios/' + arg_dict['source']
+
+    dest_string = arg_dict['dest']
+    dirname = os.path.dirname(dest_string)
+    if os.path.exists(dirname) and os.path.isdir(dirname):
+        output_scenario_path = dest_string
+    else:
+        output_scenario_path = content_folder_path + '/Scenarios/' + dest_string
 
     return os.path.realpath(content_folder_path), \
            os.path.realpath(input_scenario_path), \
