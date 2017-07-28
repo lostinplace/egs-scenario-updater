@@ -20,6 +20,7 @@ To run the script from the command line:
 ```
 ~ git clone git@github.com:lostinplace/egs-scenario-updater.git
 ~ cd egs-scenario-updater
+~ pip install -r requirements.txt
 ~ ./updater.py --basepath=<PATH TO CONTENT FOLDER> <NAME OF SOURCE SCENARIO> <NAME OF OUTPUT SCENARIO>
 ```
 
